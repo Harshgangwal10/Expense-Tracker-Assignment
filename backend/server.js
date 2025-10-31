@@ -14,7 +14,6 @@ app.use(cors({
   origin: [
     "https://expense-tracker-assignment-ar2a1qqs7-harshs-projects-87f7c4b0.vercel.app/",
     "http://localhost:5173",
-    "http://localhost:5174"
   ],
   credentials: true
 }));
@@ -32,3 +31,5 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server started on http://localhost:${port}`);
 });
+
+export default app;
