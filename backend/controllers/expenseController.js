@@ -15,23 +15,38 @@ export const getExpenses = async (req, res) => {
 export const addExpense = async (req, res) => {
   try {
     const { title, amount, category, date } = req.body;
+    console.log("Received data:", { title, amount, category, date });
 
     // Validate required fields
     if (!title || !amount || !category) {
+      console.log("Validation failed: Missing required fields");
       return res.json({ success: false, message: "All fields are required" });
+    }
+
+    // Handle date: if empty or invalid, use current date
+    let parsedDate = new Date();
+    if (date && date.trim() !== "") {
+      const tempDate = new Date(date);
+      if (!isNaN(tempDate.getTime())) {
+        parsedDate = tempDate;
+      } else {
+        console.log("Invalid date provided, using current date");
+      }
     }
 
     const expense = new expenseModel({
       title,
-      amount,
+      amount: Number(amount), // Ensure amount is a number
       category,
-      date: date || new Date(),
+      date: parsedDate,
     });
 
+    console.log("Saving expense:", expense);
     await expense.save();
+    console.log("Expense saved successfully");
     res.json({ success: true, message: "Expense added successfully" });
   } catch (error) {
-    console.log(error);
+    console.log("Error adding expense:", error);
     res.json({ success: false, message: "Error adding expense" });
   }
 };

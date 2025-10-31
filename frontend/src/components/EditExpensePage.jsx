@@ -1,13 +1,13 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import ExpenseForm from "./ExpenseForm.jsx";
 
-const EditExpensePage = ({ onUpdate  }) => {
+const EditExpensePage = ({ refreshExpenses  }) => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const expense = state?.expense;
 
   const handleUpdate  = () => {
-    onUpdate ();
+    refreshExpenses ();
     navigate("/");
   };
 

@@ -9,7 +9,8 @@ const ExpenseList = ({ onEdit, refreshKey = 0 }) => {
   //  loading all expenses
   const allExpenses = async () => {
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || VITE_API_BASE_URL_LOCAL;
+      const apiBaseUrl =
+        import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
       const res = await axios.get(`${apiBaseUrl}/api/expenses`);
       if (res.data?.success) {
         const data = res.data.data || [];
@@ -45,7 +46,8 @@ const ExpenseList = ({ onEdit, refreshKey = 0 }) => {
   // delete an expense
   const deleteExpense = async (id) => {
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || VITE_API_BASE_URL_LOCAL;
+      const apiBaseUrl =
+        import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
       await axios.delete(`${apiBaseUrl}/api/expenses/${id}`);
       allExpenses();
     } catch (err) {
