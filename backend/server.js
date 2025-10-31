@@ -12,7 +12,7 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors({
   origin: [
-    "expense-tracker-assignment-git-main-harshs-projects-87f7c4b0.vercel.app",
+    "https://expense-tracker-assignment-ar2a1qqs7-harshs-projects-87f7c4b0.vercel.app/",
     "http://localhost:5173",
     "http://localhost:5174"
   ],
