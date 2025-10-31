@@ -15,7 +15,7 @@ const ExpenseForm = ({
     date: "",
   });
 
-  // update form values 
+  // update form values
   const handleInput = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
@@ -38,7 +38,6 @@ const ExpenseForm = ({
     }
   }, [isEditing, expenseToEdit]);
 
-
   // handle form submit for add and edit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,13 +46,16 @@ const ExpenseForm = ({
       if (isEditing) {
         // update existing expense
         await axios.put(
-          `http://localhost:5000/api/expenses/${expenseToEdit._id}`,
+          `https://expense-tracker-assignment-eck0.onrender.com/api/expenses/${expenseToEdit._id}`,
           data
         );
         onEditSubmit && onEditSubmit();
       } else {
         // add new expense
-        await axios.post("http://localhost:5000/api/expenses", data);
+        await axios.post(
+          "https://expense-tracker-assignment-eck0.onrender.com/api/expenses",
+          data
+        );
         setData({ title: "", amount: "", category: "", date: "" });
         onExpenseAdded && onExpenseAdded();
       }
@@ -69,7 +71,6 @@ const ExpenseForm = ({
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-
           {/*form field title , amount ,category and date  */}
           <label className="block text-sm font-medium text-gray-700">
             Title
