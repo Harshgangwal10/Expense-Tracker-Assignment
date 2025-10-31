@@ -44,7 +44,10 @@ const ExpenseForm = ({
 
     try {
       const apiBaseUrl =
-        import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+  import.meta.env.MODE === "development"
+    ? import.meta.env.VITE_API_BASE_URL_LOCAL
+    : import.meta.env.VITE_API_BASE_URL;
+
       if (isEditing) {
         // update existing expense
         await axios.put(

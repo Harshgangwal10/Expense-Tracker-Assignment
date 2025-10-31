@@ -4,7 +4,11 @@ import expenseModel from "../models/Expense.js";
 export const getExpenses = async (req, res) => {
   try {
     const expenses = await expenseModel.find({});
-    res.json({ success: true, data: expenses });
+    if (expenses.length === 0) {
+      res.json({ success: true, message: "No expenses found", data: expenses });
+    } else {
+      res.json({ success: true, message: "Expenses fetched successfully", data: expenses });
+    }
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error fetching expenses" });
@@ -23,7 +27,14 @@ export const addExpense = async (req, res) => {
       return res.json({ success: false, message: "All fields are required" });
     }
 
-    // Handle date: if empty or invalid, use current date
+    // Validate amount is a valid positive number
+    const numAmount = Number(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+      console.log("Validation failed: Invalid amount");
+      return res.json({ success: false, message: "Amount must be a valid positive number" });
+    }
+
+    // Handle date if empty or invalid, use current date
     let parsedDate = new Date();
     if (date && date.trim() !== "") {
       const tempDate = new Date(date);
@@ -36,22 +47,21 @@ export const addExpense = async (req, res) => {
 
     const expense = new expenseModel({
       title,
-      amount: Number(amount), // Ensure amount is a number
+      amount: Number(amount), // amount is a number
       category,
       date: parsedDate,
     });
 
     console.log("Saving expense:", expense);
-    await expense.save();
-    console.log("Expense saved successfully");
-    res.json({ success: true, message: "Expense added successfully" });
+    const savedExpense = await expense.save();
+    res.json({ success: true, message: "Expense added successfully", data: savedExpense });
   } catch (error) {
-    console.log("Error adding expense:", error);
-    res.json({ success: false, message: "Error adding expense" });
-  }
+  console.error(" Error adding expense:", error.message);
+  res.json({ success: false, message: error.message });
+}
 };
 
-// Edit expense (bonus)
+// Edit expense 
 export const editExpense = async (req, res) => {
   try {
     const { id } = req.params;
