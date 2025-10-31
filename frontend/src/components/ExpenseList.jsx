@@ -9,9 +9,8 @@ const ExpenseList = ({ onEdit, refreshKey = 0 }) => {
   //  loading all expenses
   const allExpenses = async () => {
     try {
-      const res = await axios.get(
-        "https://expense-tracker-assignment-eck0.onrender.com/api/expenses"
-      );
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      const res = await axios.get(`${apiBaseUrl}/api/expenses`);
       if (res.data?.success) {
         const data = res.data.data || [];
         setExpenses(data);
@@ -46,9 +45,8 @@ const ExpenseList = ({ onEdit, refreshKey = 0 }) => {
   // delete an expense
   const deleteExpense = async (id) => {
     try {
-      await axios.delete(
-        `https://expense-tracker-assignment-eck0.onrender.com/api/expenses/${id}`
-      );
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      await axios.delete(`${apiBaseUrl}/api/expenses/${id}`);
       allExpenses();
     } catch (err) {
       console.error("Failed to delete", err);

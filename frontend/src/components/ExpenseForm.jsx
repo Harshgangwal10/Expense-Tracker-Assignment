@@ -43,19 +43,17 @@ const ExpenseForm = ({
     e.preventDefault();
 
     try {
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
       if (isEditing) {
         // update existing expense
         await axios.put(
-          `https://expense-tracker-assignment-eck0.onrender.com/api/expenses/${expenseToEdit._id}`,
+          `${apiBaseUrl}/api/expenses/${expenseToEdit._id}`,
           data
         );
         onEditSubmit && onEditSubmit();
       } else {
         // add new expense
-        await axios.post(
-          "https://expense-tracker-assignment-eck0.onrender.com/api/expenses",
-          data
-        );
+        await axios.post(`${apiBaseUrl}/api/expenses`, data);
         setData({ title: "", amount: "", category: "", date: "" });
         onExpenseAdded && onExpenseAdded();
       }
