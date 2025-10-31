@@ -1,1 +1,0 @@
-- [x] Add validation in addExpense function to ensure amount is a valid positive number
