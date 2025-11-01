@@ -52,10 +52,11 @@ export const addExpense = async (req, res) => {
       message: "Expense added successfully",
       data: savedExpense,
     });
-  } catch (error) {
-    console.error("Error adding expense:", error.message);
-    res.json({ success: false, message: "Error adding expense" });
-  }
+ } catch (error) {
+  console.error(" Error adding expense:", error); 
+  res.status(500).json({ success: false, message: error.message });
+}
+
 };
 
 // Edit expense
