@@ -7,7 +7,6 @@ const ExpenseForm = ({
   isEditing = false,
   expenseToEdit = null,
 }) => {
-  //  to stored form values
   const [data, setData] = useState({
     title: "",
     amount: "",
@@ -15,13 +14,13 @@ const ExpenseForm = ({
     date: "",
   });
 
-  // update form values
+  // Handle input changes
   const handleInput = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // when editing page open shows the pre fill values
+  // Pre-fill when editing
   useEffect(() => {
     if (isEditing && expenseToEdit) {
       const formattedDate = expenseToEdit.date
@@ -38,25 +37,20 @@ const ExpenseForm = ({
     }
   }, [isEditing, expenseToEdit]);
 
-  // handle form submit for add and edit
+  // Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const apiBaseUrl =
-  import.meta.env.MODE === "development"
-    ? import.meta.env.VITE_API_BASE_URL_LOCAL
-    : import.meta.env.VITE_API_BASE_URL;
+        import.meta.env.MODE === "development"
+          ? import.meta.env.VITE_API_BASE_URL_LOCAL
+          : import.meta.env.VITE_API_BASE_URL;
 
       if (isEditing) {
-        // update existing expense
-        await axios.put(
-          `${apiBaseUrl}/api/expenses/${expenseToEdit._id}`,
-          data
-        );
+        await axios.put(`${apiBaseUrl}/api/expenses/${expenseToEdit._id}`, data);
         onEditSubmit && onEditSubmit();
       } else {
-        // add new expense
         await axios.post(`${apiBaseUrl}/api/expenses`, data);
         setData({ title: "", amount: "", category: "", date: "" });
         onExpenseAdded && onExpenseAdded();
@@ -71,9 +65,10 @@ const ExpenseForm = ({
       <h2 className="text-2xl font-semibold mb-4">
         {isEditing ? "Edit Expense" : "Add Expense"}
       </h2>
+
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Title */}
         <div>
-          {/*form field title , amount ,category and date  */}
           <label className="block text-sm font-medium text-gray-700">
             Title
           </label>
@@ -86,6 +81,8 @@ const ExpenseForm = ({
             className="mt-1 w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
+
+        {/* Amount */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
             Amount
@@ -99,6 +96,8 @@ const ExpenseForm = ({
             className="mt-1 w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
+
+        {/* Category */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
             Category
@@ -118,6 +117,8 @@ const ExpenseForm = ({
             <option value="Other">Other</option>
           </select>
         </div>
+
+        {/* Date */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
             Date
@@ -131,7 +132,7 @@ const ExpenseForm = ({
           />
         </div>
 
-        {/* submit button */}
+        {/* Buttons */}
         <button
           type="submit"
           className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition"
@@ -139,7 +140,6 @@ const ExpenseForm = ({
           {isEditing ? "Update Expense" : "Add Expense"}
         </button>
 
-        {/* cancel button only for editing */}
         {isEditing && (
           <button
             type="button"

@@ -1,12 +1,13 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const expenseSchema = new mongoose.Schema({
-   title: { type: String, required: true },
-   amount: { type: Number, required: true },
-   category: { type: String, required: true },
-   date: { type: Date, default: Date.now() },
+  title: { type: String, required: true },
+  amount: { type: Number, required: true },
+  category: { type: String, required: true },
+  date: { type: Date, default: Date.now },
 });
 
-const expenseModel = mongoose.models.expense || mongoose.model("Expense", expenseSchema);
+const expenseModel =
+  mongoose.models.Expense || mongoose.model("Expense", expenseSchema);
 
 export default expenseModel;

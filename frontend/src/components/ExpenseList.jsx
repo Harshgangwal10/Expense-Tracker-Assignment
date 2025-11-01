@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const ExpenseList = ({ onEdit, refreshKey = 0 }) => {
+const ExpenseList = ({ onEdit }) => {
   const [expenses, setExpenses] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [categoryStatus, setCategoryStatus] = useState({});
 
-  //  loading all expenses
+  // Load all expenses
   const allExpenses = async () => {
     try {
-     const apiBaseUrl =
-  import.meta.env.MODE === "development"
-    ? import.meta.env.VITE_API_BASE_URL_LOCAL
-    : import.meta.env.VITE_API_BASE_URL;
+      const apiBaseUrl =
+        import.meta.env.MODE === "development"
+          ? import.meta.env.VITE_API_BASE_URL_LOCAL
+          : import.meta.env.VITE_API_BASE_URL;
 
       const res = await axios.get(`${apiBaseUrl}/api/expenses`);
       if (res.data?.success) {
@@ -30,7 +30,7 @@ const ExpenseList = ({ onEdit, refreshKey = 0 }) => {
     }
   };
 
-  // total and per category sum
+  // Calculate totals
   const totalExpenses = (list) => {
     let total = 0;
     const byCategory = {};
@@ -46,31 +46,31 @@ const ExpenseList = ({ onEdit, refreshKey = 0 }) => {
     setCategoryStatus(byCategory);
   };
 
-  // delete an expense
+  // Delete an expense
   const deleteExpense = async (id) => {
     try {
       const apiBaseUrl =
-  import.meta.env.MODE === "development"
-    ? import.meta.env.VITE_API_BASE_URL_LOCAL
-    : import.meta.env.VITE_API_BASE_URL;
+        import.meta.env.MODE === "development"
+          ? import.meta.env.VITE_API_BASE_URL_LOCAL
+          : import.meta.env.VITE_API_BASE_URL;
 
       await axios.delete(`${apiBaseUrl}/api/expenses/${id}`);
       allExpenses();
     } catch (err) {
-      console.error("Failed to delete", err);
+      console.error("Failed to delete:", err);
     }
   };
 
-  // fetch data when refreshed
+  // Fetch data initially
   useEffect(() => {
     allExpenses();
-  }, [refreshKey]);
+  }, []);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-4">Your Expenses</h2>
 
-      {/* Total + Category Summary */}
+      {/* Summary */}
       <section className="mb-6">
         <h3 className="text-lg font-semibold mb-1">
           Total Spent: ${totalAmount.toFixed(2)}
@@ -102,7 +102,7 @@ const ExpenseList = ({ onEdit, refreshKey = 0 }) => {
               <div>
                 <h3 className="text-lg font-medium">{exp.title}</h3>
                 <p className="text-sm text-gray-600">
-                  {exp.category}-{" "}
+                  {exp.category} -{" "}
                   {exp.date
                     ? new Date(exp.date).toLocaleDateString()
                     : "No date"}

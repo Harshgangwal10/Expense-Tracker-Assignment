@@ -5,7 +5,7 @@ import ExpenseList from "./components/ExpenseList.jsx";
 import EditExpensePage from "./components/EditExpensePage.jsx";
 
 function App() {
-  // Used to re-render of the ExpenseList whenever data changes
+  // Used to re-render the ExpenseList whenever data changes
   const [reload, setReload] = useState(0);
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ function App() {
           </h1>
         </header>
 
-        {/* app routes */}
+        {/* App routes */}
         <Routes>
           {/* Home - Add and List Expenses */}
           <Route
@@ -45,7 +45,7 @@ function App() {
           {/* Edit Expense Page */}
           <Route
             path="/edit/:id"
-            element={<EditExpensePage onExpenseUpdated={refreshExpenses} />}
+            element={<EditExpensePage refreshExpenses={refreshExpenses} />}
           />
         </Routes>
       </div>

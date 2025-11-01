@@ -5,31 +5,37 @@ import { connectDB } from "./config/db.js";
 import expenseRouter from "./routes/expenses.js";
 
 dotenv.config();
-
 const app = express();
-const port = process.env.PORT || 5000;
 
+// CORS setup for both local and deployed frontend
+app.use(
+  cors({
+    origin: [
+      "https://expense-tracker-assignment-navy.vercel.app",
+      "http://localhost:5173",
+    ],
+    credentials: true,
+  })
+);
+
+// Middleware
 app.use(express.json());
-app.use(cors({
-  origin: [
-    "https://expense-tracker-assignment-ar2a1qqs7-harshs-projects-87f7c4b0.vercel.app/",
-    "http://localhost:5173",
-  ],
-  credentials: true
-}));
 
-// Database connection
+// DB Connection
 connectDB();
 
 // Routes
 app.use("/api/expenses", expenseRouter);
 
+// Root route
 app.get("/", (req, res) => {
-  res.send("API Working");
+  res.send("Expense Tracker API is running!");
 });
 
-app.listen(port, () => {
-  console.log(`Server started on http://localhost:${port}`);
-});
+// Server start
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () =>
+  console.log(`Server started on http://localhost:${PORT}`)
+);
 
 export default app;
